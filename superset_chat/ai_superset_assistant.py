@@ -12,9 +12,8 @@ from functools import wraps
 import os
 from pathlib import Path
 
-# Assuming these imports are correctly configured in your project
-from app.server.llm import get_stream_agent_responce
-from app.databases.postgres import Database
+from superset_chat.app.server.llm import get_stream_agent_responce
+from superset_chat.app.databases.postgres import Database
 
 logger = logging.getLogger(__name__)
 

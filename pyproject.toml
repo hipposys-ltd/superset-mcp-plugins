@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "superset-chat"
-version = "0.1.0a1"
+version = "0.1.0a2"
 description = "AI Assistant plugin for Apache Superset"
 license = "MIT"
 authors = ["Hipposys"]
 readme = "README.md"
+packages = [{include = "superset_chat"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
