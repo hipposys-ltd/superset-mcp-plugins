@@ -1,0 +1,21 @@
+{% extends "appbuilder/base.html" %}
+
+{% block head_css %}
+  {{ super() }}
+  <style>
+    .main-content {
+      margin-left: 0 !important;
+      padding: 0 !important;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid" style="padding: 0;">
+  {{ content|safe }}
+</div>
+{% endblock %}
+
+{% block tail %}
+  {{ super() }}
+{% endblock %}
