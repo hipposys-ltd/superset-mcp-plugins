@@ -31,7 +31,7 @@ FLASK_APP_MUTATOR = lambda app: init_custom_views(app)
 def init_custom_views(app):
     """Initialize custom views after Flask app is created"""
     try:
-        from ai_superset_assistant import AISupersetAssistantView
+        from superset_chat.ai_superset_assistant import AISupersetAssistantView
         
         # Get the appbuilder instance
         from flask_appbuilder import AppBuilder

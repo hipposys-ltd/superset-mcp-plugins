@@ -2,6 +2,10 @@ version: "3"
 
 services:
   superset:
+    volumes:
+      - ./superset_chat/app:/app/app
+      - ./superset_chat/templates:/app/templates
+      - ./superset_chat/ai_superset_assistant.py:/app/ai_superset_assistant.py
     env_file:
       - .env
     networks:
