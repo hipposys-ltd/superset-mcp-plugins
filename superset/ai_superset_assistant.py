@@ -352,7 +352,6 @@ class AISupersetAssistantView(BaseView):
                     </div>
                     
                     <form class="chat-input-form" id="chatInputForm">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <input 
                             type="text" 
                             class="chat-input" 
@@ -376,23 +375,42 @@ class AISupersetAssistantView(BaseView):
         
         <script>
             let currentSessionId = null;
+            let csrfToken = null;
             
             document.addEventListener('DOMContentLoaded', function() {
-                initializeSession();
+                initializeCSRF().then(() => {
+                    initializeSession();
+                });
                 document.getElementById('chatInputForm').addEventListener('submit', sendMessage);
                 document.getElementById('newChatBtn').addEventListener('click', newChat);
                 document.getElementById('clearChatBtn').addEventListener('click', clearChat);
                 document.getElementById('showExamplesBtn').addEventListener('click', showExamples);
             });
             
+            async function initializeCSRF() {
+                try {
+                    const response = await fetch('/api/v1/security/csrf_token/');
+                    if (response.ok) {
+                        const data = await response.json();
+                        csrfToken = data.result;
+                    }
+                } catch (error) {
+                    console.error('Error fetching CSRF token:', error);
+                }
+            }
+            
             async function initializeSession() {
                 try {
+                    const headers = {
+                        'Content-Type': 'application/json'
+                    };
+                    if (csrfToken) {
+                        headers['X-CSRFToken'] = csrfToken;
+                    }
+                    
                     const response = await fetch('/aisupersetassistantview/api/new_session', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
-                        }
+                        headers: headers
                     });
                     
                     if (response.ok) {
@@ -415,7 +433,6 @@ class AISupersetAssistantView(BaseView):
                 const messageInput = document.getElementById('messageInput');
                 const sendBtn = document.getElementById('sendBtn');
                 const message = messageInput.value.trim();
-                const csrfToken = document.querySelector('input[name="csrf_token"]').value;
                 
                 if (!message || !currentSessionId) return;
                 
@@ -450,12 +467,16 @@ class AISupersetAssistantView(BaseView):
                         messagesContainer.scrollTop = messagesContainer.scrollHeight;
                     }
                     
+                    const headers = {
+                        'Content-Type': 'application/json'
+                    };
+                    if (csrfToken) {
+                        headers['X-CSRFToken'] = csrfToken;
+                    }
+                    
                     const response = await fetch('/aisupersetassistantview/api/chat_stream', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': csrfToken
-                        },
+                        headers: headers,
                         body: JSON.stringify({
                             message: message,
                             session_id: currentSessionId
