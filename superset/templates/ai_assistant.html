@@ -17,5 +17,247 @@
 {% endblock %}
 
 {% block tail %}
-  {{ super() }}
+{{ super() }}
+<script{% if nonce %} nonce="{{ nonce }}"{% endif %}>
+let currentSessionId = null;
+let csrfToken = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCSRF().then(() => {
+        initializeSession();
+    });
+    document.getElementById('chatInputForm').addEventListener('submit', sendMessage);
+    document.getElementById('newChatBtn').addEventListener('click', newChat);
+    document.getElementById('clearChatBtn').addEventListener('click', clearChat);
+    document.getElementById('showExamplesBtn').addEventListener('click', showExamples);
+});
+
+async function initializeCSRF() {
+    try {
+        const response = await fetch('/api/v1/security/csrf_token/');
+        if (response.ok) {
+            const data = await response.json();
+            csrfToken = data.result;
+        }
+    } catch (error) {
+        console.error('Error fetching CSRF token:', error);
+    }
+}
+
+async function initializeSession() {
+    try {
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        if (csrfToken) {
+            headers['X-CSRFToken'] = csrfToken;
+        }
+        
+        const response = await fetch('/aisupersetassistantview/api/new_session', {
+            method: 'POST',
+            headers: headers
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            currentSessionId = data.session_id;
+            document.getElementById('sessionId').textContent = currentSessionId.substring(0, 8) + '...';
+            document.getElementById('connectionStatus').textContent = 'Connected';
+        } else {
+            throw new Error('Failed to initialize session');
+        }
+    } catch (error) {
+        console.error('Error initializing session:', error);
+        document.getElementById('connectionStatus').textContent = 'Error';
+    }
+}
+
+async function sendMessage(event) {
+    event.preventDefault();
+    
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const message = messageInput.value.trim();
+    
+    if (!message || !currentSessionId) return;
+    
+    messageInput.disabled = true;
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Sending...';
+    
+    addMessage(message, 'user');
+    messageInput.value = '';
+    
+    showTypingIndicator();
+    
+    try {
+        let assistantMessageDiv = null;
+        let assistantContentDiv = null;
+        
+        function createAssistantMessage() {
+            const messagesContainer = document.getElementById('chatMessages');
+            assistantMessageDiv = document.createElement('div');
+            assistantMessageDiv.className = 'message assistant';
+            
+            assistantContentDiv = document.createElement('div');
+            assistantContentDiv.innerHTML = '';
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            timeDiv.textContent = new Date().toLocaleTimeString();
+            
+            assistantMessageDiv.appendChild(assistantContentDiv);
+            assistantMessageDiv.appendChild(timeDiv);
+            messagesContainer.appendChild(assistantMessageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        if (csrfToken) {
+            headers['X-CSRFToken'] = csrfToken;
+        }
+        
+        const response = await fetch('/aisupersetassistantview/api/chat_stream', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({
+                message: message,
+                session_id: currentSessionId
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to send message');
+        }
+        
+        hideTypingIndicator();
+        createAssistantMessage();
+        
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+            
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    try {
+                        const data = JSON.parse(line.slice(6));
+                        
+                        if (data.type === 'session' && data.session_id) {
+                            currentSessionId = data.session_id;
+                            document.getElementById('sessionId').textContent = currentSessionId.substring(0, 8) + '...';
+                        } else if (data.type === 'chunk' && data.content) {
+                            assistantContentDiv.innerHTML += data.content;
+                            const messagesContainer = document.getElementById('chatMessages');
+                            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                        } else if (data.type === 'error') {
+                            assistantContentDiv.innerHTML = data.content;
+                        } else if (data.type === 'done') {
+                            const finalContent = assistantContentDiv.innerHTML
+                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+                                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                                .replace(/\n/g, '<br>');
+                            assistantContentDiv.innerHTML = finalContent;
+                            break;
+                        }
+                    } catch (e) {
+                        console.error('Error parsing streaming data:', e);
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error sending message:', error);
+        hideTypingIndicator();
+        addMessage('Sorry, I encountered an error. Please try again.', 'assistant');
+    } finally {
+        messageInput.disabled = false;
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Send';
+        messageInput.focus();
+    }
+}
+
+function addMessage(content, sender) {
+    const messagesContainer = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}`;
+    
+    const formattedContent = content
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\n/g, '<br>');
+    
+    messageDiv.innerHTML = `
+        <div>${formattedContent}</div>
+        <div class="message-time">${new Date().toLocaleTimeString()}</div>
+    `;
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function showTypingIndicator() {
+    document.getElementById('typingIndicator').classList.add('show');
+    const messagesContainer = document.getElementById('chatMessages');
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function hideTypingIndicator() {
+    document.getElementById('typingIndicator').classList.remove('show');
+}
+
+async function newChat() {
+    if (confirm('Start a new chat session? This will clear the current conversation.')) {
+        await initializeSession();
+        clearChatDisplay();
+        addMessage('Hello! I\'m your AI Superset Assistant 🚀\n\nI can help you with:\n• Creating and structuring DAGs\n• Debugging workflow issues\n• Performance optimization\n• Best practices and patterns\n\nWhat would you like to know about Apache Superset?', 'assistant');
+    }
+}
+
+function clearChat() {
+    if (confirm('Clear the current chat history?')) {
+        clearChatDisplay();
+        addMessage('Chat cleared. How can I help you with Apache Superset?', 'assistant');
+    }
+}
+
+function clearChatDisplay() {
+    const messagesContainer = document.getElementById('chatMessages');
+    messagesContainer.innerHTML = '';
+}
+
+function showExamples() {
+    const examples = [
+        "How do I create a simple DAG?",
+        "Help me debug a failing task",
+        "What are DAG best practices?",
+        "How can I optimize my workflow performance?",
+        "Show me sensor examples"
+    ];
+    
+    const messageInput = document.getElementById('messageInput');
+    const randomExample = examples[Math.floor(Math.random() * examples.length)];
+    messageInput.value = randomExample;
+    messageInput.focus();
+}
+
+document.getElementById('messageInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        document.querySelector('.chat-input-form').dispatchEvent(new Event('submit'));
+    }
+});
+</script>
 {% endblock %}

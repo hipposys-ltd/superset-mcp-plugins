@@ -19,7 +19,7 @@ ENABLE_PROXY_FIX = True
 SECRET_KEY = "YOUR_OWN_RANDOM_GENERATED_STRING"
 
 # WTF_CSRF_ENABLED = False
-TALISMAN_ENABLED = False
+TALISMAN_ENABLED = True
 
 SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{database_user}:{database_password}@{database_host}:5432/{database_name}"
 SQLALCHEMY_ECHO = True
