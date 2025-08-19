@@ -2091,7 +2091,7 @@ description = "Python package to allow easy integration to Neo4j's GraphRAG feat
 optional = false
 python-versions = "<4.0.0,>=3.9.0"
 groups = ["main"]
-markers = "python_version >= \"3.13\""
+markers = "python_full_version >= \"3.12.4\""
 files = [
     {file = "neo4j_graphrag-1.6.1-py3-none-any.whl", hash = "sha256:600a92308ac94a12ac87b085d768027c6f02e1609d252433d97776efe02b756d"},
     {file = "neo4j_graphrag-1.6.1.tar.gz", hash = "sha256:62862a0780b108445a7a7d307d2014b89bee2b1eab27dd8fe7bb46155f952d97"},
@@ -2127,7 +2127,7 @@ description = "Python package to allow easy integration to Neo4j's GraphRAG feat
 optional = false
 python-versions = "<3.13,>=3.9.0"
 groups = ["main"]
-markers = "python_version <= \"3.12\""
+markers = "python_full_version < \"3.12.4\""
 files = [
     {file = "neo4j_graphrag-1.7.0-py3-none-any.whl", hash = "sha256:29a854f2f1e268f043446cdd387c72ee954b87726329ef6479c59ed7b9cf0751"},
     {file = "neo4j_graphrag-1.7.0.tar.gz", hash = "sha256:c6c1f730e680d8af3ff3e1ee6086c465c15dd3245157e6c40606ac3ddae7d4f0"},
@@ -3607,14 +3607,14 @@ full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart (>=0.0.7
 
 [[package]]
 name = "superset-mcp-server"
-version = "0.1.0a2"
+version = "0.1.0a3"
 description = "An MCP server for Apache Superset that dynamically exposes API endpoints as tools."
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "superset_mcp_server-0.1.0a2-py3-none-any.whl", hash = "sha256:dbb024b9cdd8b7db85e901ed9c6335c962d4209456239d7a0891503735cd9900"},
-    {file = "superset_mcp_server-0.1.0a2.tar.gz", hash = "sha256:0edd3fd2d2bfaf2777f7c496792db6757a820addfdc080c409ba364106161401"},
+    {file = "superset_mcp_server-0.1.0a3-py3-none-any.whl", hash = "sha256:60ba7c3d4bea5b26b82a2a05da7bb5aeb79d077f6b3ef408206767954e76c1f4"},
+    {file = "superset_mcp_server-0.1.0a3.tar.gz", hash = "sha256:ba32d43661498a7d52eaddbe9644f7c6b758334433f8a77133602783b0610174"},
 ]
 
 [package.dependencies]
@@ -4237,4 +4237,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "de411f560b7ccd1be48733008ad5b732ae7eeb953ab2b347a751b62e7831f64d"
+content-hash = "3892f853f6280197b347f040548862048736820b98faa94f48b021d6878d1e74"
