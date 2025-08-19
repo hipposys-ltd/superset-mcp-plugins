@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "superset-chat"
-version = "0.1.0a2"
+version = "0.1.0a3"
 description = "AI Assistant plugin for Apache Superset"
 license = "MIT"
 authors = ["Hipposys"]
@@ -12,7 +12,7 @@ python = "^3.10"
 flask = ">=2.0.0"
 flask-appbuilder = ">=3.0.0"
 SQLAlchemy = ">=1.4.0"
-langchain = "0.3"
+langchain = "^0.3"
 langchain-community = "0.3"
 langchain-core = "*"
 langchain-text-splitters = "0.3"
@@ -28,6 +28,8 @@ psycopg = "3.2"
 langchain-mcp-adapters = "*"
 superset-mcp-server = "0.1.0a2"
 langfuse = "*"
+dbt-graph-loader = "0.1.0a1"
+langchain-neo4j = "^0.4.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

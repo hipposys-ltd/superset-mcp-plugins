@@ -245,7 +245,7 @@ description = "Timeout context manager for asyncio programs"
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
-markers = "python_version == \"3.10\""
+markers = "python_full_version < \"3.11.3\""
 files = [
     {file = "async-timeout-4.0.3.tar.gz", hash = "sha256:4640d96be84d82d02ed59ea2b7105a0f7b33abe8703703cd0ab0bf87c427522f"},
     {file = "async_timeout-4.0.3-py3-none-any.whl", hash = "sha256:7405140ff1230c310e51dc27b3145b9092d659ce68ff733fb0cefe3ee42be028"},
@@ -495,6 +495,23 @@ marshmallow = ">=3.18.0,<4.0.0"
 typing-inspect = ">=0.4.0,<1"
 
 [[package]]
+name = "dbt-graph-loader"
+version = "0.1.0a1"
+description = "Load DBT metadata into graph databases (Neo4j and FalkorDB)"
+optional = false
+python-versions = "<4.0,>=3.8"
+groups = ["main"]
+files = [
+    {file = "dbt_graph_loader-0.1.0a1-py3-none-any.whl", hash = "sha256:8917511891f32deeb593536c76457ffbc41f03c6ca798036d7402f9cb3be8eb3"},
+    {file = "dbt_graph_loader-0.1.0a1.tar.gz", hash = "sha256:ee9c142be79a79692cbac979e157d568037eb4297e4aa4bb1e653436a38e6cdb"},
+]
+
+[package.dependencies]
+click = ">=8.0.0"
+falkordb = ">=1.0.0"
+neo4j = ">=5.0.0"
+
+[[package]]
 name = "defusedxml"
 version = "0.7.1"
 description = "XML bomb protection for Python stdlib modules"
@@ -591,6 +608,22 @@ typing-extensions = {version = ">=4.6.0", markers = "python_version < \"3.13\""}
 
 [package.extras]
 test = ["pytest (>=6)"]
+
+[[package]]
+name = "falkordb"
+version = "1.2.0"
+description = "Python client for interacting with FalkorDB database"
+optional = false
+python-versions = "<4.0,>=3.8"
+groups = ["main"]
+files = [
+    {file = "falkordb-1.2.0-py3-none-any.whl", hash = "sha256:7572d9cc377735d22efc52fe6fe73c7a435422c827b6ea3ca223a850a77be12e"},
+    {file = "falkordb-1.2.0.tar.gz", hash = "sha256:ce57365b86722d538e75aa5d438de67ecd8eb9478da612506d9812cd7f182d0b"},
+]
+
+[package.dependencies]
+python-dateutil = ">=2.9.0,<3.0.0"
+redis = ">=5.0.1,<6.0.0"
 
 [[package]]
 name = "fastapi"
@@ -907,6 +940,46 @@ files = [
     {file = "frozenlist-1.7.0-py3-none-any.whl", hash = "sha256:9a5af342e34f7e97caf8c995864c7a396418ae2859cc6fdf1b1073020d516a7e"},
     {file = "frozenlist-1.7.0.tar.gz", hash = "sha256:2e310d81923c2437ea8670467121cc3e9b0f76d3043cc1d2331d56c7fb7a3a8f"},
 ]
+
+[[package]]
+name = "fsspec"
+version = "2024.12.0"
+description = "File-system specification"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "fsspec-2024.12.0-py3-none-any.whl", hash = "sha256:b520aed47ad9804237ff878b504267a3b0b441e97508bd6d2d8774e3db85cee2"},
+    {file = "fsspec-2024.12.0.tar.gz", hash = "sha256:670700c977ed2fb51e0d9f9253177ed20cbde4a3e5c0283cc5385b5870c8533f"},
+]
+
+[package.extras]
+abfs = ["adlfs"]
+adl = ["adlfs"]
+arrow = ["pyarrow (>=1)"]
+dask = ["dask", "distributed"]
+dev = ["pre-commit", "ruff"]
+doc = ["numpydoc", "sphinx", "sphinx-design", "sphinx-rtd-theme", "yarl"]
+dropbox = ["dropbox", "dropboxdrivefs", "requests"]
+full = ["adlfs", "aiohttp (!=4.0.0a0,!=4.0.0a1)", "dask", "distributed", "dropbox", "dropboxdrivefs", "fusepy", "gcsfs", "libarchive-c", "ocifs", "panel", "paramiko", "pyarrow (>=1)", "pygit2", "requests", "s3fs", "smbprotocol", "tqdm"]
+fuse = ["fusepy"]
+gcs = ["gcsfs"]
+git = ["pygit2"]
+github = ["requests"]
+gs = ["gcsfs"]
+gui = ["panel"]
+hdfs = ["pyarrow (>=1)"]
+http = ["aiohttp (!=4.0.0a0,!=4.0.0a1)"]
+libarchive = ["libarchive-c"]
+oci = ["ocifs"]
+s3 = ["s3fs"]
+sftp = ["paramiko"]
+smb = ["smbprotocol"]
+ssh = ["paramiko"]
+test = ["aiohttp (!=4.0.0a0,!=4.0.0a1)", "numpy", "pytest", "pytest-asyncio (!=0.22.0)", "pytest-benchmark", "pytest-cov", "pytest-mock", "pytest-recording", "pytest-rerunfailures", "requests"]
+test-downstream = ["aiobotocore (>=2.5.4,<3.0.0)", "dask-expr", "dask[dataframe,test]", "moto[server] (>4,<5)", "pytest-timeout", "xarray"]
+test-full = ["adlfs", "aiohttp (!=4.0.0a0,!=4.0.0a1)", "cloudpickle", "dask", "distributed", "dropbox", "dropboxdrivefs", "fastparquet", "fusepy", "gcsfs", "jinja2", "kerchunk", "libarchive-c", "lz4", "notebook", "numpy", "ocifs", "pandas", "panel", "paramiko", "pyarrow", "pyarrow (>=1)", "pyftpdlib", "pygit2", "pytest", "pytest-asyncio (!=0.22.0)", "pytest-benchmark", "pytest-cov", "pytest-mock", "pytest-recording", "pytest-rerunfailures", "python-snappy", "requests", "smbprotocol", "tqdm", "urllib3", "zarr", "zstandard"]
+tqdm = ["tqdm"]
 
 [[package]]
 name = "googleapis-common-protos"
@@ -1235,6 +1308,18 @@ files = [
 ]
 
 [[package]]
+name = "json-repair"
+version = "0.39.1"
+description = "A package to repair broken json strings"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "json_repair-0.39.1-py3-none-any.whl", hash = "sha256:3001409a2f319249f13e13d6c622117a5b70ea7e0c6f43864a0233cdffc3a599"},
+    {file = "json_repair-0.39.1.tar.gz", hash = "sha256:e90a489f247e1a8fc86612a5c719872a3dbf9cbaffd6d55f238ec571a77740fa"},
+]
+
+[[package]]
 name = "jsonpatch"
 version = "1.33"
 description = "Apply JSON-Patches (RFC 6902)"
@@ -1300,31 +1385,31 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "langchain"
-version = "0.3.0"
+version = "0.3.11"
 description = "Building applications with LLMs through composability"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "langchain-0.3.0-py3-none-any.whl", hash = "sha256:59a75a6a1eb7bfd2a6bf0c7a5816409a8fdc9046187b07af287b23b9899617af"},
-    {file = "langchain-0.3.0.tar.gz", hash = "sha256:a7c23892440bd1f5b9e029ff0dd709dd881ae927c4c0a3210ac64dba9bbf3f7f"},
+    {file = "langchain-0.3.11-py3-none-any.whl", hash = "sha256:6655feded1f7569e5a4bd11e38de0a26c7c86646c0dea49afccceba42df60ad7"},
+    {file = "langchain-0.3.11.tar.gz", hash = "sha256:17868ea3f0cf5a46b4b88bf1961c4a12d32ea0778930e7d2eb5103e0287ff478"},
 ]
 
 [package.dependencies]
 aiohttp = ">=3.8.3,<4.0.0"
 async-timeout = {version = ">=4.0.0,<5.0.0", markers = "python_version < \"3.11\""}
-langchain-core = ">=0.3.0,<0.4.0"
+langchain-core = ">=0.3.24,<0.4.0"
 langchain-text-splitters = ">=0.3.0,<0.4.0"
-langsmith = ">=0.1.17,<0.2.0"
+langsmith = ">=0.1.17,<0.3"
 numpy = [
-    {version = ">=1,<2", markers = "python_version < \"3.12\""},
-    {version = ">=1.26.0,<2.0.0", markers = "python_version >= \"3.12\""},
+    {version = ">=1.22.4,<2", markers = "python_version < \"3.12\""},
+    {version = ">=1.26.2,<3", markers = "python_version >= \"3.12\""},
 ]
 pydantic = ">=2.7.4,<3.0.0"
 PyYAML = ">=5.3"
 requests = ">=2,<3"
 SQLAlchemy = ">=1.4,<3"
-tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<9.0.0"
+tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<10"
 
 [[package]]
 name = "langchain-anthropic"
@@ -1430,6 +1515,24 @@ files = [
 langchain-core = ">=0.3.36,<0.4"
 mcp = ">=1.9.2"
 typing-extensions = ">=4.14.0"
+
+[[package]]
+name = "langchain-neo4j"
+version = "0.4.0"
+description = "An integration package connecting Neo4j and LangChain"
+optional = false
+python-versions = "<4.0,>=3.9"
+groups = ["main"]
+files = [
+    {file = "langchain_neo4j-0.4.0-py3-none-any.whl", hash = "sha256:2760b5757e7a402884cf3419830217651df97fe4f44b3fec6c96b14b6d7fd18e"},
+    {file = "langchain_neo4j-0.4.0.tar.gz", hash = "sha256:3f059a66411cec1062a2b8c44953a70d0fff9e123e9fb1d6b3f17a0bef6d6114"},
+]
+
+[package.dependencies]
+langchain = ">=0.3.7,<0.4.0"
+langchain-core = ">=0.3.8,<0.4.0"
+neo4j = ">=5.25.0,<6.0.0"
+neo4j-graphrag = ">=1.5.0,<2.0.0"
 
 [[package]]
 name = "langchain-openai"
@@ -1960,6 +2063,100 @@ files = [
     {file = "mypy_extensions-1.1.0-py3-none-any.whl", hash = "sha256:1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505"},
     {file = "mypy_extensions-1.1.0.tar.gz", hash = "sha256:52e68efc3284861e772bbcd66823fde5ae21fd2fdb51c62a211403730b916558"},
 ]
+
+[[package]]
+name = "neo4j"
+version = "5.28.2"
+description = "Neo4j Bolt driver for Python"
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+files = [
+    {file = "neo4j-5.28.2-py3-none-any.whl", hash = "sha256:5c53b5c3eee6dee7e920c9724391aa38d7135a651e71b766da00533b92a91a94"},
+    {file = "neo4j-5.28.2.tar.gz", hash = "sha256:7d38e27e4f987a45cc9052500c6ee27325cb23dae6509037fe31dd7ddaed70c7"},
+]
+
+[package.dependencies]
+pytz = "*"
+
+[package.extras]
+numpy = ["numpy (>=1.7.0,<3.0.0)"]
+pandas = ["numpy (>=1.7.0,<3.0.0)", "pandas (>=1.1.0,<3.0.0)"]
+pyarrow = ["pyarrow (>=1.0.0)"]
+
+[[package]]
+name = "neo4j-graphrag"
+version = "1.6.1"
+description = "Python package to allow easy integration to Neo4j's GraphRAG features"
+optional = false
+python-versions = "<4.0.0,>=3.9.0"
+groups = ["main"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "neo4j_graphrag-1.6.1-py3-none-any.whl", hash = "sha256:600a92308ac94a12ac87b085d768027c6f02e1609d252433d97776efe02b756d"},
+    {file = "neo4j_graphrag-1.6.1.tar.gz", hash = "sha256:62862a0780b108445a7a7d307d2014b89bee2b1eab27dd8fe7bb46155f952d97"},
+]
+
+[package.dependencies]
+fsspec = ">=2024.9.0,<2025.0.0"
+json-repair = ">=0.39.1,<0.40.0"
+neo4j = ">=5.17.0,<6.0.0"
+pydantic = ">=2.6.3,<3.0.0"
+pypdf = ">=5.1.0,<6.0.0"
+pyyaml = ">=6.0.2,<7.0.0"
+types-pyyaml = ">=6.0.12.20240917,<7.0.0.0"
+
+[package.extras]
+anthropic = ["anthropic (>=0.49.0,<0.50.0)"]
+cohere = ["cohere (>=5.9.0,<6.0.0)"]
+experimental = ["langchain-text-splitters (>=0.3.0,<0.4.0)", "llama-index (>=0.12.0,<0.13.0)", "pygraphviz (>=1.0.0,<2.0.0) ; python_version < \"3.10\"", "pygraphviz (>=1.13.0,<2.0.0) ; python_version >= \"3.10\" and python_full_version < \"4.0.0\""]
+google = ["google-cloud-aiplatform (>=1.66.0,<2.0.0)"]
+kg-creation-tools = ["pygraphviz (>=1.0.0,<2.0.0) ; python_version < \"3.10\"", "pygraphviz (>=1.13.0,<2.0.0) ; python_version >= \"3.10\" and python_full_version < \"4.0.0\""]
+mistralai = ["mistralai (>=1.0.3,<2.0.0)"]
+ollama = ["ollama (>=0.4.4,<0.5.0)"]
+openai = ["openai (>=1.51.1,<2.0.0)"]
+pinecone = ["pinecone-client (>=4.1.0,<5.0.0)"]
+qdrant = ["qdrant-client (>=1.11.3,<2.0.0)"]
+sentence-transformers = ["sentence-transformers (>=3.0.0,<4.0.0)"]
+weaviate = ["weaviate-client (>=4.6.1,<5.0.0)"]
+
+[[package]]
+name = "neo4j-graphrag"
+version = "1.7.0"
+description = "Python package to allow easy integration to Neo4j's GraphRAG features"
+optional = false
+python-versions = "<3.13,>=3.9.0"
+groups = ["main"]
+markers = "python_version <= \"3.12\""
+files = [
+    {file = "neo4j_graphrag-1.7.0-py3-none-any.whl", hash = "sha256:29a854f2f1e268f043446cdd387c72ee954b87726329ef6479c59ed7b9cf0751"},
+    {file = "neo4j_graphrag-1.7.0.tar.gz", hash = "sha256:c6c1f730e680d8af3ff3e1ee6086c465c15dd3245157e6c40606ac3ddae7d4f0"},
+]
+
+[package.dependencies]
+fsspec = ">=2024.9.0,<2025.0.0"
+json-repair = ">=0.39.1,<0.40.0"
+neo4j = ">=5.17.0,<6.0.0"
+pydantic = ">=2.6.3,<3.0.0"
+pypdf = ">=5.1.0,<6.0.0"
+pyyaml = ">=6.0.2,<7.0.0"
+types-pyyaml = ">=6.0.12.20240917,<7.0.0.0"
+
+[package.extras]
+anthropic = ["anthropic (>=0.49.0,<0.50.0)"]
+cohere = ["cohere (>=5.9.0,<6.0.0)"]
+experimental = ["langchain-text-splitters (>=0.3.0,<0.4.0)", "llama-index (>=0.12.0,<0.13.0)", "neo4j-viz (>=0.2.2,<0.3.0)"]
+fuzzy-matching = ["rapidfuzz (>=3.12.2,<4.0.0)"]
+google = ["google-cloud-aiplatform (>=1.66.0,<2.0.0)"]
+kg-creation-tools = ["neo4j-viz (>=0.2.2,<0.3.0)"]
+mistralai = ["mistralai (>=1.0.3,<2.0.0)"]
+nlp = ["spacy (==3.8.3)"]
+ollama = ["ollama (>=0.4.4,<0.5.0)"]
+openai = ["openai (>=1.51.1,<2.0.0)"]
+pinecone = ["pinecone-client (>=4.1.0,<5.0.0)"]
+qdrant = ["qdrant-client (>=1.11.3,<2.0.0)"]
+sentence-transformers = ["sentence-transformers (>=3.0.0,<4.0.0)"]
+weaviate = ["weaviate-client (>=4.6.1,<5.0.0)"]
 
 [[package]]
 name = "numpy"
@@ -2682,6 +2879,29 @@ docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
 tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
+name = "pypdf"
+version = "5.9.0"
+description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "pypdf-5.9.0-py3-none-any.whl", hash = "sha256:be10a4c54202f46d9daceaa8788be07aa8cd5ea8c25c529c50dd509206382c35"},
+    {file = "pypdf-5.9.0.tar.gz", hash = "sha256:30f67a614d558e495e1fbb157ba58c1de91ffc1718f5e0dfeb82a029233890a1"},
+]
+
+[package.dependencies]
+typing_extensions = {version = ">=4.0", markers = "python_version < \"3.11\""}
+
+[package.extras]
+crypto = ["cryptography"]
+cryptodome = ["PyCryptodome"]
+dev = ["black", "flit", "pip-tools", "pre-commit", "pytest-cov", "pytest-socket", "pytest-timeout", "pytest-xdist", "wheel"]
+docs = ["myst_parser", "sphinx", "sphinx_rtd_theme"]
+full = ["Pillow (>=8.0.0)", "cryptography"]
+image = ["Pillow (>=8.0.0)"]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 description = "Extensions to the standard Python datetime module"
@@ -2828,6 +3048,26 @@ files = [
     {file = "PyYAML-6.0.2-cp39-cp39-win_amd64.whl", hash = "sha256:39693e1f8320ae4f43943590b49779ffb98acb81f788220ea932a6b6c51004d8"},
     {file = "pyyaml-6.0.2.tar.gz", hash = "sha256:d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"},
 ]
+
+[[package]]
+name = "redis"
+version = "5.3.1"
+description = "Python client for Redis database and key-value store"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "redis-5.3.1-py3-none-any.whl", hash = "sha256:dc1909bd24669cc31b5f67a039700b16ec30571096c5f1f0d9d2324bff31af97"},
+    {file = "redis-5.3.1.tar.gz", hash = "sha256:ca49577a531ea64039b5a36db3d6cd1a0c7a60c34124d46924a45b956e8cf14c"},
+]
+
+[package.dependencies]
+async-timeout = {version = ">=4.0.3", markers = "python_full_version < \"3.11.3\""}
+PyJWT = ">=2.9.0"
+
+[package.extras]
+hiredis = ["hiredis (>=3.0.0)"]
+ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==23.2.1)", "requests (>=2.31.0)"]
 
 [[package]]
 name = "referencing"
@@ -3490,6 +3730,18 @@ shellingham = ">=1.3.0"
 typing-extensions = ">=3.7.4.3"
 
 [[package]]
+name = "types-pyyaml"
+version = "6.0.12.20250809"
+description = "Typing stubs for PyYAML"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "types_pyyaml-6.0.12.20250809-py3-none-any.whl", hash = "sha256:032b6003b798e7de1a1ddfeefee32fac6486bdfe4845e0ae0e7fb3ee4512b52f"},
+    {file = "types_pyyaml-6.0.12.20250809.tar.gz", hash = "sha256:af4a1aca028f18e75297da2ee0da465f799627370d74073e96fee876524f61b5"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.14.1"
 description = "Backported and Experimental Type Hints for Python 3.9+"
@@ -3985,4 +4237,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "dd28429525e61cd6e7582a63b623f8fcd7549c521e6db8ab4b4c9f0bba9ed7d1"
+content-hash = "de411f560b7ccd1be48733008ad5b732ae7eeb953ab2b347a751b62e7831f64d"
