@@ -99,10 +99,10 @@ Function: {event['name']}
 ''')
             case 'on_tool_end':
                 return ChatMessage(LLMEventType.CHAT_CHUNK, cls.Sender.AI,
-#                                    f'''\n\nTool Output: \n```\n
-# {event['data']['output'].content}
-# \n```\n''')
-                                   '')
+                                   f'''\n\nTool Output: \n```\n
+{event['data']['output'].content}
+\n```\n''')
+                                #    '')
             # The conversation is done.
             case 'done':
                 return ChatMessage(
