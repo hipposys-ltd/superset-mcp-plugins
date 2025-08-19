@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "superset-chat"
-version = "0.1.0a5"
+version = "0.1.0a6"
 description = "AI Assistant plugin for Apache Superset"
 license = "MIT"
 authors = ["Hipposys"]
@@ -26,7 +26,7 @@ mcp = "*"
 httpx = "*"
 psycopg = "3.2"
 langchain-mcp-adapters = "*"
-superset-mcp-server = "0.1.0a3"
+superset-mcp-server = "0.1.0a4"
 langfuse = "*"
 dbt-graph-loader = "0.1.0a1"
 langchain-neo4j = "^0.4.0"
