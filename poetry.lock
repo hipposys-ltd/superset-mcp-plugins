@@ -2091,7 +2091,7 @@ description = "Python package to allow easy integration to Neo4j's GraphRAG feat
 optional = false
 python-versions = "<4.0.0,>=3.9.0"
 groups = ["main"]
-markers = "python_full_version >= \"3.12.4\""
+markers = "python_version >= \"3.13\""
 files = [
     {file = "neo4j_graphrag-1.6.1-py3-none-any.whl", hash = "sha256:600a92308ac94a12ac87b085d768027c6f02e1609d252433d97776efe02b756d"},
     {file = "neo4j_graphrag-1.6.1.tar.gz", hash = "sha256:62862a0780b108445a7a7d307d2014b89bee2b1eab27dd8fe7bb46155f952d97"},
@@ -2127,7 +2127,7 @@ description = "Python package to allow easy integration to Neo4j's GraphRAG feat
 optional = false
 python-versions = "<3.13,>=3.9.0"
 groups = ["main"]
-markers = "python_full_version < \"3.12.4\""
+markers = "python_version <= \"3.12\""
 files = [
     {file = "neo4j_graphrag-1.7.0-py3-none-any.whl", hash = "sha256:29a854f2f1e268f043446cdd387c72ee954b87726329ef6479c59ed7b9cf0751"},
     {file = "neo4j_graphrag-1.7.0.tar.gz", hash = "sha256:c6c1f730e680d8af3ff3e1ee6086c465c15dd3245157e6c40606ac3ddae7d4f0"},
@@ -2862,20 +2862,20 @@ windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
 name = "pyjwt"
-version = "2.10.1"
+version = "2.8.0"
 description = "JSON Web Token implementation in Python"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "PyJWT-2.10.1-py3-none-any.whl", hash = "sha256:dcdd193e30abefd5debf142f9adfcdd2b58004e644f25406ffaebd50bd98dacb"},
-    {file = "pyjwt-2.10.1.tar.gz", hash = "sha256:3cc5772eb20009233caf06e9d8a0577824723b44e6648ee0a2aedb6cf9381953"},
+    {file = "PyJWT-2.8.0-py3-none-any.whl", hash = "sha256:59127c392cc44c2da5bb3192169a91f429924e17aff6534d70fdc02ab3e04320"},
+    {file = "PyJWT-2.8.0.tar.gz", hash = "sha256:57e28d156e3d5c10088e0c68abb90bfac3df82b40a71bd0daa20c65ccd5c23de"},
 ]
 
 [package.extras]
 crypto = ["cryptography (>=3.4.0)"]
-dev = ["coverage[toml] (==5.0.4)", "cryptography (>=3.4.0)", "pre-commit", "pytest (>=6.0.0,<7.0.0)", "sphinx", "sphinx-rtd-theme", "zope.interface"]
-docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
+dev = ["coverage[toml] (==5.0.4)", "cryptography (>=3.4.0)", "pre-commit", "pytest (>=6.0.0,<7.0.0)", "sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
+docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
 tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
@@ -3051,19 +3051,18 @@ files = [
 
 [[package]]
 name = "redis"
-version = "5.3.1"
+version = "5.2.1"
 description = "Python client for Redis database and key-value store"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "redis-5.3.1-py3-none-any.whl", hash = "sha256:dc1909bd24669cc31b5f67a039700b16ec30571096c5f1f0d9d2324bff31af97"},
-    {file = "redis-5.3.1.tar.gz", hash = "sha256:ca49577a531ea64039b5a36db3d6cd1a0c7a60c34124d46924a45b956e8cf14c"},
+    {file = "redis-5.2.1-py3-none-any.whl", hash = "sha256:ee7e1056b9aea0f04c6c2ed59452947f34c4940ee025f5dd83e6a6418b6989e4"},
+    {file = "redis-5.2.1.tar.gz", hash = "sha256:16f2e22dff21d5125e8481515e386711a34cbec50f0e44413dd7d9c060a54e0f"},
 ]
 
 [package.dependencies]
 async-timeout = {version = ">=4.0.3", markers = "python_full_version < \"3.11.3\""}
-PyJWT = ">=2.9.0"
 
 [package.extras]
 hiredis = ["hiredis (>=3.0.0)"]
@@ -4237,4 +4236,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "d2446d967928c6b1a6e7428eb74b4e37ce89b45c846dba6a42548109df129986"
+content-hash = "c45918afcaaf425f7d7310d44ffe3f5393b7971b07996f5efcc2170e40f040a3"
