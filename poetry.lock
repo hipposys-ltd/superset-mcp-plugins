@@ -3607,14 +3607,14 @@ full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart (>=0.0.7
 
 [[package]]
 name = "superset-mcp-server"
-version = "0.1.0a4"
+version = "0.1.0a5"
 description = "An MCP server for Apache Superset that dynamically exposes API endpoints as tools."
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "superset_mcp_server-0.1.0a4-py3-none-any.whl", hash = "sha256:7e85fa101097371fa42b2567c6a89079f721c95aad455549cbf239e35541cd4c"},
-    {file = "superset_mcp_server-0.1.0a4.tar.gz", hash = "sha256:61b66abd58522c146e0b726fbac122abef5645b9d63ddc9cef001a0fb0be6a16"},
+    {file = "superset_mcp_server-0.1.0a5-py3-none-any.whl", hash = "sha256:3f2a0d852ea65b3efbacb197f2d00316499e9d1c7043371b506b06267914def8"},
+    {file = "superset_mcp_server-0.1.0a5.tar.gz", hash = "sha256:f898e51de8df1984fe1e2218e039dd9dfd1001f4b59f8766fabb8c280d4dd2aa"},
 ]
 
 [package.dependencies]
@@ -4237,4 +4237,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "4b4bd026c527919c4f1cce9f39a849b872b4d569af8207f9919b0f46b9c936be"
+content-hash = "d2446d967928c6b1a6e7428eb74b4e37ce89b45c846dba6a42548109df129986"
