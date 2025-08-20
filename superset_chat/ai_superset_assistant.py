@@ -220,6 +220,71 @@ class AISupersetAssistantView(BaseView):
                 border-radius: 3px;
                 font-family: 'Courier New', monospace;
             }
+            
+            /* Expandable Code Blocks Styles */
+            .code-block-container {
+                margin: 15px 0;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                overflow: hidden;
+                background: #f8f9fa;
+            }
+            .code-block-header {
+                background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+                color: white;
+                padding: 12px 16px;
+                cursor: pointer;
+                user-select: none;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                transition: background 0.3s ease;
+                font-weight: 500;
+            }
+            .code-block-header:hover {
+                background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+            }
+            .code-block-header .toggle-icon {
+                font-size: 16px;
+                transition: transform 0.3s ease;
+            }
+            .code-block-header.expanded .toggle-icon {
+                transform: rotate(180deg);
+            }
+            .code-block-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                background: white;
+            }
+            .code-block-content.expanded {
+                max-height: 500px;
+                overflow-y: auto;
+            }
+            .code-block-content pre {
+                margin: 0;
+                padding: 16px;
+                background: #f1f3f4;
+                border: none;
+                font-family: 'Courier New', Monaco, monospace;
+                font-size: 14px;
+                line-height: 1.5;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+            .tool-output {
+                background: #fff3cd;
+                border-left: 4px solid #ffc107;
+                padding: 16px;
+                margin-top: 8px;
+            }
+            .tool-output pre {
+                background: #fffbf0 !important;
+                padding: 12px;
+                border-radius: 4px;
+                overflow-x: auto;
+            }
+            
             .message-time {
                 font-size: 0.8rem;
                 opacity: 0.7;

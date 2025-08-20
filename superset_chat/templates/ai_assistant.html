@@ -22,6 +22,88 @@
 let currentSessionId = null;
 let csrfToken = null;
 
+// Expandable Code Blocks Functions
+function toggleCodeBlock(header) {
+    const content = header.nextElementSibling;
+    const isExpanded = content.classList.contains('expanded');
+    
+    console.log('Toggling code block, currently expanded:', isExpanded);
+    
+    if (isExpanded) {
+        // Collapse
+        content.classList.remove('expanded');
+        header.classList.remove('expanded');
+        content.style.maxHeight = '0';
+        console.log('Collapsed');
+    } else {
+        // Expand
+        content.classList.add('expanded');
+        header.classList.add('expanded');
+        // Set a reasonable max height for the content
+        content.style.maxHeight = '1000px';
+        console.log('Expanded, content height:', content.scrollHeight);
+    }
+}
+
+function convertMarkdownToExpandable(messageElement) {
+    let content = messageElement.innerHTML;
+    
+    // Debug: Log the content to see what we're working with
+    console.log('Processing message content:', content);
+    
+    // Pattern to match Start Running Tool and Tool Output sections
+    const toolPattern = /Start Running Tool:([\s\S]*?)Tool Output:\s*([\s\S]*?)(?=<br><br>I've retrieved|<br><br>Here's|$)/g;
+    
+    let match;
+    while ((match = toolPattern.exec(content)) !== null) {
+        console.log('Found tool block:', match);
+        
+        const toolData = match[1].replace(/<[^>]*>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
+        const outputData = match[2].replace(/<[^>]*>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
+        
+        const replacement = `
+            <div class="code-block-container">
+                <div class="code-block-header" data-toggle="expandable">
+                    <span>🔧 Start Running Tool</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="code-block-content">
+                    <pre>${toolData}</pre>
+                    <div class="tool-output">
+                        <strong>Tool Output:</strong>
+                        <pre>${outputData}</pre>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        console.log('Applying replacement');
+        content = content.replace(match[0], replacement);
+        break; // Handle one at a time to avoid index issues
+    }
+    
+    messageElement.innerHTML = content;
+    
+    // Add event listeners to the new expandable headers
+    const expandableHeaders = messageElement.querySelectorAll('[data-toggle="expandable"]');
+    expandableHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+            toggleCodeBlock(this);
+        });
+        header.style.cursor = 'pointer'; // Make it clear it's clickable
+    });
+    
+    console.log('Added event listeners to', expandableHeaders.length, 'headers');
+}
+
+function processNewMessage(messageElement) {
+    convertMarkdownToExpandable(messageElement);
+}
+
+// Make functions globally available
+window.toggleCodeBlock = toggleCodeBlock;
+window.processNewMessage = processNewMessage;
+
 document.addEventListener('DOMContentLoaded', function() {
     initializeCSRF().then(() => {
         initializeSession();
@@ -168,6 +250,9 @@ async function sendMessage(event) {
                                 .replace(/`([^`]+)`/g, '<code>$1</code>')
                                 .replace(/\n/g, '<br>');
                             assistantContentDiv.innerHTML = finalContent;
+                            
+                            // Process the message for expandable code blocks after completion
+                            processNewMessage(assistantMessageDiv);
                             break;
                         }
                     } catch (e) {
@@ -203,6 +288,11 @@ function addMessage(content, sender) {
         <div>${formattedContent}</div>
         <div class="message-time">${new Date().toLocaleTimeString()}</div>
     `;
+    
+    // Process for expandable code blocks if it's an assistant message
+    if (sender === 'assistant') {
+        processNewMessage(messageDiv);
+    }
     
     messagesContainer.appendChild(messageDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
