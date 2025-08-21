@@ -51,15 +51,15 @@ function convertMarkdownToExpandable(messageElement) {
     // Debug: Log the content to see what we're working with
     console.log('Processing message content:', content);
     
-    // Pattern to match Start Running Tool and Tool Output sections
-    const toolPattern = /Start Running Tool:([\s\S]*?)Tool Output:\s*([\s\S]*?)(?=<br><br>I've retrieved|<br><br>Here's|$)/g;
+    // More precise pattern that stops at the first paragraph after Tool Output
+    const toolPattern = /Start Running Tool:<br><pre><code>([\s\S]*?)<\/code><\/pre><br><br><br>Tool Output:\s*<br><pre><code>([\s\S]*?)<\/code><\/pre><br>/g;
     
-    let match;
-    while ((match = toolPattern.exec(content)) !== null) {
-        console.log('Found tool block:', match);
+    let newContent = content.replace(toolPattern, function(match, toolData, outputData) {
+        console.log('Found tool block match:', { toolData: toolData.substring(0, 100), outputData: outputData.substring(0, 100) });
         
-        const toolData = match[1].replace(/<[^>]*>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
-        const outputData = match[2].replace(/<[^>]*>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
+        // Clean up the data
+        const cleanToolData = toolData.replace(/<br>/g, '\n').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
+        const cleanOutputData = outputData.replace(/<br>/g, '\n').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
         
         const replacement = `
             <div class="code-block-container">
@@ -68,32 +68,36 @@ function convertMarkdownToExpandable(messageElement) {
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="code-block-content">
-                    <pre>${toolData}</pre>
+                    <pre>${cleanToolData}</pre>
                     <div class="tool-output">
                         <strong>Tool Output:</strong>
-                        <pre>${outputData}</pre>
+                        <pre>${cleanOutputData}</pre>
                     </div>
                 </div>
-            </div>
+            </div><br>
         `;
         
-        console.log('Applying replacement');
-        content = content.replace(match[0], replacement);
-        break; // Handle one at a time to avoid index issues
-    }
-    
-    messageElement.innerHTML = content;
-    
-    // Add event listeners to the new expandable headers
-    const expandableHeaders = messageElement.querySelectorAll('[data-toggle="expandable"]');
-    expandableHeaders.forEach(header => {
-        header.addEventListener('click', function() {
-            toggleCodeBlock(this);
-        });
-        header.style.cursor = 'pointer'; // Make it clear it's clickable
+        console.log('Applied tool block replacement');
+        return replacement;
     });
     
-    console.log('Added event listeners to', expandableHeaders.length, 'headers');
+    // Only update if we made changes
+    if (newContent !== content) {
+        messageElement.innerHTML = newContent;
+        
+        // Add event listeners to the new expandable headers
+        const expandableHeaders = messageElement.querySelectorAll('[data-toggle="expandable"]');
+        expandableHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                toggleCodeBlock(this);
+            });
+            header.style.cursor = 'pointer';
+        });
+        
+        console.log('Added event listeners to', expandableHeaders.length, 'headers');
+    } else {
+        console.log('No tool blocks found to convert');
+    }
 }
 
 function processNewMessage(messageElement) {
